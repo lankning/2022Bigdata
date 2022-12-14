@@ -6,7 +6,7 @@
 
 **To DO: 预测用户是否进行购买产品**
 
-Factors: 
+## Description
 
 | 字段             | 说明                                                 |
 | ---------------- | ---------------------------------------------------- |
@@ -31,6 +31,36 @@ Factors:
 | subscribe        | 客户是否进行购买：yes 或 no                          |
 
 More details about data for training, testing, and submission are shown in [showdata.ipynb](showdata.ipynb).
+
+## Train data
+
+| id   | age  | job          | marital  | education           | default | housing | loan | contact  | month | day_of_week | duration | campaign | pdays | previous | poutcome    | emp_var_rate | cons_price_index | cons_conf_index | lending_rate3m | nr_employed | subscribe |
+| ---- | ---- | ------------ | -------- | ------------------- | ------- | ------- | ---- | -------- | ----- | ----------- | -------- | -------- | ----- | -------- | ----------- | ------------ | ---------------- | --------------- | -------------- | ----------- | --------- |
+| 1    | 51   | admin.       | divorced | professional.course | no      | yes     | yes  | cellular | aug   | mon         | 4621     | 1        | 112   | 2        | failure     | 1.4          | 90.81            | -35.53          | 0.69           | 5219.74     | no        |
+| 2    | 50   | services     | married  | high.school         | unknown | yes     | no   | cellular | may   | mon         | 4715     | 1        | 412   | 2        | nonexistent | -1.8         | 96.33            | -40.58          | 4.05           | 4974.79     | yes       |
+| 3    | 48   | blue-collar  | divorced | basic.9y            | no      | no      | no   | cellular | apr   | wed         | 171      | 0        | 1027  | 1        | failure     | -1.8         | 96.33            | -44.74          | 1.5            | 5022.61     | no        |
+| 4    | 26   | entrepreneur | single   | high.school         | yes     | yes     | yes  | cellular | aug   | fri         | 359      | 26       | 998   | 0        | nonexistent | 1.4          | 97.08            | -35.55          | 5.11           | 5222.87     | yes       |
+| 5    | 45   | admin.       | single   | university.degree   | no      | no      | no   | cellular | nov   | tue         | 3178     | 1        | 240   | 4        | success     | -3.4         | 89.82            | -33.83          | 1.17           | 4884.7      | no        |
+
+## Test data
+
+| id    | age  | job         | marital | education           | default | housing | loan | contact   | month | day_of_week | duration | campaign | pdays | previous | poutcome    | emp_var_rate | cons_price_index | cons_conf_index | lending_rate3m | nr_employed |
+| ----- | ---- | ----------- | ------- | ------------------- | ------- | ------- | ---- | --------- | ----- | ----------- | -------- | -------- | ----- | -------- | ----------- | ------------ | ---------------- | --------------- | -------------- | ----------- |
+| 22501 | 35   | technician  | single  | professional.course | no      | yes     | yes  | cellular  | aug   | mon         | 3295     | 1        | 476   | 0        | success     | 1.4          | 95.37            | -33.04          | 3.63           | 5204.54     |
+| 22502 | 26   | admin.      | single  | high.school         | no      | yes     | no   | cellular  | may   | thu         | 2872     | 1        | 166   | 2        | success     | -1.8         | 91.75            | -44.42          | 3.16           | 4924.78     |
+| 22503 | 44   | blue-collar | married | basic.6y            | no      | no      | no   | telephone | may   | mon         | 268      | 3        | 968   | 0        | nonexistent | 1.1          | 89.67            | -36.9           | 5.04           | 4947.02     |
+| 22504 | 36   | blue-collar | married | basic.9y            | no      | yes     | no   | telephone | nov   | thu         | 30       | 1        | 432   | 5        | success     | -0.1         | 89.87            | -41.66          | 3.27           | 5203.33     |
+| 22505 | 41   | blue-collar | married | basic.4y            | no      | yes     | no   | telephone | may   | thu         | 1670     | 1        | 944   | 3        | success     | 1.1          | 97.64            | -36.32          | 3.95           | 4992.02     |
+
+## Submission
+
+| id    | subscribe |
+| ----- | --------- |
+| 22501 | no        |
+| 22502 | no        |
+| 22503 | no        |
+| 22504 | no        |
+| 22505 | no        |
 
 ## Player
 
