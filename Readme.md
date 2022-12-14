@@ -30,7 +30,7 @@ Factors:
 | nr_employed      | 雇员人数（季度指标）                                 |
 | subscribe        | 客户是否进行购买：yes 或 no                          |
 
-More details about data for training, testing, and submission are shown in [Readme.ipynb](Readme.ipynb).
+More details about data for training, testing, and submission are shown in [showdata.ipynb](showdata.ipynb).
 
 ## Player
 
