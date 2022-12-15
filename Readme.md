@@ -30,8 +30,6 @@
 | nr_employed      | 雇员人数（季度指标）                                 |
 | subscribe        | 客户是否进行购买：yes 或 no                          |
 
-More details about data for training, testing, and submission are shown in [showdata.ipynb](showdata.ipynb).
-
 ## Train data
 
 | id   | age  | job          | marital  | education           | default | housing | loan | contact  | month | day_of_week | duration | campaign | pdays | previous | poutcome    | emp_var_rate | cons_price_index | cons_conf_index | lending_rate3m | nr_employed | subscribe |
