@@ -1,18 +1,19 @@
-# Ali Tianchi Competition
+# 阿里天池竞赛
 [【教学赛】金融数据分析赛题1：银行客户认购产品预测](https://tianchi.aliyun.com/competition/entrance/531993/introduction?spm=5176.12281925.0.0.46e67137PjhlEt)
 ![](https://img.alicdn.com/imgextra/i3/O1CN01fBX9JF1XbwO78w3zP_!!6000000002943-2-tps-1440-438.png)
 
-# Data
+# 数据
 
 **To DO: 预测用户是否进行购买产品**
 
-## Description
+## 数据解释
 
 | 字段             | 说明                                                 |
 | ---------------- | ---------------------------------------------------- |
 | age              | 年龄                                                 |
 | job              | 职业：admin, unknown, unemployed, management…        |
 | marital          | 婚姻：married, divorced, single                      |
+| education        | 受教育程度                                           |
 | default          | 信用卡是否有违约: yes or no                          |
 | housing          | 是否有房贷: yes or no                                |
 | contact          | 联系方式：unknown, telephone, cellular               |
@@ -30,7 +31,9 @@
 | nr_employed      | 雇员人数（季度指标）                                 |
 | subscribe        | 客户是否进行购买：yes 或 no                          |
 
-## Train data
+## 训练数据
+
+共有22500条记录，每条记录有21个字段（包括subscribe）
 
 | id   | age  | job          | marital  | education           | default | housing | loan | contact  | month | day_of_week | duration | campaign | pdays | previous | poutcome    | emp_var_rate | cons_price_index | cons_conf_index | lending_rate3m | nr_employed | subscribe |
 | ---- | ---- | ------------ | -------- | ------------------- | ------- | ------- | ---- | -------- | ----- | ----------- | -------- | -------- | ----- | -------- | ----------- | ------------ | ---------------- | --------------- | -------------- | ----------- | --------- |
@@ -40,7 +43,9 @@
 | 4    | 26   | entrepreneur | single   | high.school         | yes     | yes     | yes  | cellular | aug   | fri         | 359      | 26       | 998   | 0        | nonexistent | 1.4          | 97.08            | -35.55          | 5.11           | 5222.87     | yes       |
 | 5    | 45   | admin.       | single   | university.degree   | no      | no      | no   | cellular | nov   | tue         | 3178     | 1        | 240   | 4        | success     | -3.4         | 89.82            | -33.83          | 1.17           | 4884.7      | no        |
 
-## Test data
+## 测试数据
+
+共有7500条记录，每条记录有20个字段（去除了subscribe）
 
 | id    | age  | job         | marital | education           | default | housing | loan | contact   | month | day_of_week | duration | campaign | pdays | previous | poutcome    | emp_var_rate | cons_price_index | cons_conf_index | lending_rate3m | nr_employed |
 | ----- | ---- | ----------- | ------- | ------------------- | ------- | ------- | ---- | --------- | ----- | ----------- | -------- | -------- | ----- | -------- | ----------- | ------------ | ---------------- | --------------- | -------------- | ----------- |
@@ -50,7 +55,7 @@
 | 22504 | 36   | blue-collar | married | basic.9y            | no      | yes     | no   | telephone | nov   | thu         | 30       | 1        | 432   | 5        | success     | -0.1         | 89.87            | -41.66          | 3.27           | 5203.33     |
 | 22505 | 41   | blue-collar | married | basic.4y            | no      | yes     | no   | telephone | may   | thu         | 1670     | 1        | 944   | 3        | success     | 1.1          | 97.64            | -36.32          | 3.95           | 4992.02     |
 
-## Submission
+## 提交格式
 
 | id    | subscribe |
 | ----- | --------- |
@@ -60,6 +65,8 @@
 | 22504 | no        |
 | 22505 | no        |
 
-## Player
+## 参赛队伍
+
+我组件了一支单人队伍，队伍名称是finishtheless
 
 ![image-20221214153011503](statics/image-20221214153011503.png)
