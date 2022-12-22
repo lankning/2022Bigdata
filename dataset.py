@@ -55,12 +55,10 @@ class Dataset(paddle.io.Dataset):
         for i in range(2, 21):
             if i in self.encodelist:
                 inp = np.append(inp, self.correspondingdict[record[i]])
+        inp = np.float32(inp)
         return inp, label
 
     def __len__(self):
-        """
-        步骤四：实现 __len__ 函数，返回数据集的样本总数
-        """
         return len(self.dataframe)
 
 if __name__=="__main__":
@@ -68,6 +66,12 @@ if __name__=="__main__":
     print("Number of records: ", len(dataset))
     struct = cfgs_io("correspondingdict.pkl", "in")
     [print(k,v) for k,v in struct.items()]
+    # 取第i条记录
+    for i in range(100):
+        x,y = dataset.__getitem__(i)
+        # print(x.shape, y.shape)
+        if len(x) != 54:
+            print("ERROR: ",i)
     '''
     yes [1. 0. 0.]
     no [0. 1. 0.]
