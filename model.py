@@ -24,7 +24,8 @@ class fcnet(paddle.nn.Layer):
                     paddle.nn.Linear( in_features = nodes,  out_features = out_num)
                     )
         self.fclayers =  paddle.nn.LayerList(fclayers)
-        self.silu = paddle.nn.Silu("Silu")
+        self.relu = paddle.nn.ReLU()
+        self.softmax = paddle.nn.Softmax()
         self.layers = layers
 
     def forward(self, x):
@@ -37,7 +38,8 @@ class fcnet(paddle.nn.Layer):
         '''
         # encoder part
         for i in range(self.layers):
-            x = self.silu(self.fclayers[i](x))
+            x = self.relu(self.fclayers[i](x))
+        x = self.softmax(x)
         return x
 
 if __name__=="__main__":

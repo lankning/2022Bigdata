@@ -13,10 +13,10 @@ from model import *
 # print(model_info)
 
 if __name__=="__main__":
-    fcmodel = fcnet(54, 2)
+    fcmodel = fcnet(54, 2, 5, 2048)
     fcmodel.train()
     dataset = Dataset("data/train.csv")
-    train_loader = paddle.io.DataLoader(dataset, batch_size=1, shuffle=True)
+    train_loader = paddle.io.DataLoader(dataset, batch_size=1000, shuffle=True)
 
     epochs = 5
     optim = paddle.optimizer.Adam(parameters=fcmodel.parameters())
