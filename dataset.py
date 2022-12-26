@@ -51,26 +51,23 @@ class Dataset(paddle.io.Dataset):
             uniquelist = self.dataframe.iloc[:,i].unique()
             for j in range(len(uniquelist)):
                 uniquedict[uniquelist[j]] = j
-            self.dataframe[i] = self.dataframe[i].map(uniquedict)
-            cfgs_io("%d.pkl" % i, "out", uniquedict)
+            self.dataframe.iloc[:,i] = self.dataframe.iloc[:,i].map(uniquedict)
+            cfgs_io("statics/%d.pkl" % i, "out", uniquedict)
    
     def showlabel(self):
         for i in self.encodelist:
-            struct = cfgs_io("%d.pkl" % i, "in")
+            struct = cfgs_io("statics/%d.pkl" % i, "in")
             print(struct)
 
     def __getitem__(self, index):
         record = self.dataframe.iloc[index].values
-        label = record[-1]
-        if label == 'yes':
-            label = np.array((1, 0), dtype='float32')
-        else:
-            label = np.array((0, 1), dtype='float32')
-        inp = record[:-1].copy()
+        label = record[-1:].copy()
+        inp = record[1:-1].copy()
         # for i in range(2, 21):
         #     if i in self.encodelist:
         #         inp = np.append(inp, self.correspondingdict[record[i]])
         inp = np.float32(inp)
+        label = np.float32(label)
         return inp, label
 
     def __len__(self):
@@ -80,58 +77,19 @@ if __name__=="__main__":
     dataset = Dataset("data/train.csv")
     print("Number of records: ", len(dataset))
     dataset.showlabel()
-    # struct = cfgs_io("correspondingdict.pkl", "in")
-    # [print(k,v) for k,v in struct.items()]
     # 取第i条记录
-    for i in range(10):
-        x,y = dataset.__getitem__(i)
-        print(x, y)
+    x,y = dataset.__getitem__(0)
+    print(x.shape, y.shape)
     '''
-    yes [1. 0. 0.]
-    no [0. 1. 0.]
-    unknown [0. 0. 1.]
-    admin. [1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
-    services [0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
-    blue-collar [0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
-    entrepreneur [0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0.]
-    management [0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0.]
-    technician [0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]
-    housemaid [0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]
-    self-employed [0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
-    unemployed [0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]
-    retired [0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]
-    student [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]
-    unknown_c [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]
-    divorced [1. 0. 0. 0.]
-    married [0. 1. 0. 0.]
-    single [0. 0. 1. 0.]
-    unknown_d [0. 0. 0. 1.]
-    professional.course [1. 0. 0. 0. 0. 0. 0. 0.]
-    high.school [0. 1. 0. 0. 0. 0. 0. 0.]
-    basic.9y [0. 0. 1. 0. 0. 0. 0. 0.]
-    university.degree [0. 0. 0. 1. 0. 0. 0. 0.]
-    unknown_e [0. 0. 0. 0. 1. 0. 0. 0.]
-    basic.4y [0. 0. 0. 0. 0. 1. 0. 0.]
-    basic.6y [0. 0. 0. 0. 0. 0. 1. 0.]
-    illiterate [0. 0. 0. 0. 0. 0. 0. 1.]
-    cellular [1. 0.]
-    telephone [0. 1.]
-    aug [1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
-    may [0. 1. 0. 0. 0. 0. 0. 0. 0. 0.]
-    apr [0. 0. 1. 0. 0. 0. 0. 0. 0. 0.]
-    nov [0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]
-    jul [0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]
-    jun [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
-    oct [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]
-    dec [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]
-    sep [0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]
-    mar [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]
-    mon [1. 0. 0. 0. 0.]
-    wed [0. 1. 0. 0. 0.]
-    fri [0. 0. 1. 0. 0.]
-    tue [0. 0. 0. 1. 0.]
-    thu [0. 0. 0. 0. 1.]
-    failure [1. 0. 0.]
-    nonexistent [0. 1. 0.]
-    success [0. 0. 1.]
+    {'admin.': 0, 'services': 1, 'blue-collar': 2, 'entrepreneur': 3, 'management': 4, 'technician': 5, 'housemaid': 6, 'self-employed': 7, 'unemployed': 8, 'retired': 9, 'student': 10, 'unknown': 11}
+    {'divorced': 0, 'married': 1, 'single': 2, 'unknown': 3}
+    {'professional.course': 0, 'high.school': 1, 'basic.9y': 2, 'university.degree': 3, 'unknown': 4, 'basic.4y': 5, 'basic.6y': 6, 'illiterate': 7}
+    {'no': 0, 'unknown': 1, 'yes': 2}
+    {'yes': 0, 'no': 1, 'unknown': 2}
+    {'yes': 0, 'no': 1, 'unknown': 2}
+    {'cellular': 0, 'telephone': 1}
+    {'aug': 0, 'may': 1, 'apr': 2, 'nov': 3, 'jul': 4, 'jun': 5, 'oct': 6, 'dec': 7, 'sep': 8, 'mar': 9}
+    {'mon': 0, 'wed': 1, 'fri': 2, 'tue': 3, 'thu': 4}
+    {'failure': 0, 'nonexistent': 1, 'success': 2}
+    {'no': 0, 'yes': 1}
     '''

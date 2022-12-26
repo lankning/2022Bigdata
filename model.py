@@ -1,4 +1,5 @@
 import paddle
+import numpy as np
 # Subclass mode: https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/beginner/model_cn.html
 # API Overview： https://www.paddlepaddle.org.cn/documentation/docs/zh/api/paddle/nn/Overview_cn.html
 # Linear Op: https://www.paddlepaddle.org.cn/documentation/docs/zh/api/paddle/nn/Linear_cn.html#linear
@@ -25,7 +26,7 @@ class fcnet(paddle.nn.Layer):
                     )
         self.fclayers =  paddle.nn.LayerList(fclayers)
         self.relu = paddle.nn.ReLU()
-        self.softmax = paddle.nn.Softmax()
+        self.sigmoid = paddle.nn.Sigmoid()
         self.layers = layers
 
     def forward(self, x):
@@ -39,8 +40,80 @@ class fcnet(paddle.nn.Layer):
         # encoder part
         for i in range(self.layers):
             x = self.relu(self.fclayers[i](x))
-        x = self.softmax(x)
+        x = self.sigmoid(x)
         return x
+
+class Precision(paddle.metric.Metric):
+    """
+    Precision (also called positive predictive value) is the fraction of
+    relevant instances among the retrieved instances. Refer to
+    https://en.wikipedia.org/wiki/Evaluation_of_binary_classifiers
+
+    Noted that this class manages the precision score only for binary
+    classification task.
+    
+    ......
+
+    """
+
+    def __init__(self, name='precision', *args, **kwargs):
+        super(Precision, self).__init__(*args, **kwargs)
+        self.tp = 0  # true positive
+        self.sum = 0  # sum elements
+        self._name = name
+
+    def update(self, preds, labels):
+        """
+        Update the states based on the current mini-batch prediction results.
+
+        Args:
+            preds (numpy.ndarray): The prediction result, usually the output
+                of two-class sigmoid function. It should be a vector (column
+                vector or row vector) with data type: 'float64' or 'float32'.
+            labels (numpy.ndarray): The ground truth (labels),
+                the shape should keep the same as preds.
+                The data type is 'int32' or 'int64'.
+        """
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        elif isinstance(preds, np.array):
+            None
+        else:
+            raise ValueError("The 'preds' must be a numpy ndarray or Tensor.")
+
+        if isinstance(labels, paddle.Tensor):
+            labels = labels.numpy()
+        elif isinstance(labels, np.array):
+            None
+        else:
+            raise ValueError("The 'labels' must be a numpy ndarray or Tensor.")
+
+        self.sum = np.prod(np.shape(labels))
+        preds = np.round(preds).astype("int32")
+        labels = np.round(labels).astype("int32")
+        self.tp = np.sum([preds==labels])
+
+    def reset(self):
+        """
+        Resets all of the metric state.
+        """
+        self.tp = 0
+        self.sum = 0
+
+    def accumulate(self):
+        """
+        Calculate the final precision.
+
+        Returns:
+            A scaler float: results of the calculated precision.
+        """
+        return float(self.tp/self.sum)
+
+    def name(self):
+        """
+        Returns metric name
+        """
+        return self._name
 
 if __name__=="__main__":
     fcmodel = fcnet(20, 1)
