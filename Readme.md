@@ -65,7 +65,13 @@
 | 22504 | no        |
 | 22505 | no        |
 
-## 参赛队伍
+# Results
+
+| MSE during training       | Accuracy during training  |
+| ------------------------- | ------------------------- |
+| ![0.25](statics/loss.png) | ![86.76](statics/acc.png) |
+
+# 参赛队伍
 
 我组件了一支单人队伍，队伍名称是finishtheless
 
