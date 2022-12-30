@@ -67,9 +67,11 @@
 
 # 模型结构
 
-全连接神经网络，5层，每层2048节点。可选：ReLU激活函数。
+全连接神经网络，5层，每层2048节点。可选：ReLU激活函数、batch normlization、onehot编码。
 
-<img src="statics/fcmodel.png" style="zoom:50%;" />
+![](statics/model-arch1.png)
+
+![](statics/model-arch2.png)
 
 # 结果
 
