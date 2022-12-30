@@ -25,8 +25,8 @@ class trainfc():
         acc_fn = Precision()
         with tqdm(total=self.epochs*len(self.dataset)/self.batchsize) as pbar:
             pbar.set_description('[Training] loss: nan, acc: 0.00%')
-            for epoch in range(self.epochs):
-                for batch_id, data in enumerate(self.train_loader()):
+            for _ in range(self.epochs):
+                for _, data in enumerate(self.train_loader()):
                     inp = data[0]
                     label = data[1]
                     predicts = self.fcmodel(inp)

@@ -24,23 +24,55 @@ class fcnet(paddle.nn.Layer):
                 fclayers.append(
                     paddle.nn.Linear( in_features = nodes,  out_features = out_num)
                     )
-        self.fclayers =  paddle.nn.LayerList(fclayers)
+        self.fclayers0 =  paddle.nn.LayerList(fclayers)
+        norms = []
+        for i in range(layers - 1):
+            norms.append(
+                    paddle.nn.BatchNorm1D(num_features = nodes)
+                    )
+        self.norms =  paddle.nn.LayerList(norms)
+        # fclayers = []
+        # for i in range(layers):
+        #     if i == 0:
+        #         fclayers.append(
+        #             paddle.nn.Linear( in_features = in_num,  out_features = nodes)
+        #             )
+        #     elif i < (layers - 1):
+        #         fclayers.append(
+        #             paddle.nn.Linear( in_features = nodes,  out_features = nodes)
+        #             )
+        #     else:
+        #         fclayers.append(
+        #             paddle.nn.Linear( in_features = nodes,  out_features = out_num)
+        #             )
+        # self.fclayers2 =  paddle.nn.LayerList(fclayers)
         self.relu = paddle.nn.ReLU()
         self.sigmoid = paddle.nn.Sigmoid()
+        self.softmax = paddle.nn.Softmax()
         self.layers = layers
 
     def forward(self, x):
         '''
         Function: Forward calculate the features of network.
-        Structure: 
-        0. Temporary and spatio ecoding
-        1. Encoder: convolution layers, extract the features of inputs
-        2. Decoder: convolution layers, rebuild the frame
         '''
-        # encoder part
+        # for i in range(self.layers):
+        #     x0 = x
+        #     x1 = x
+        #     x2 = x
+        #     x0 = self.fclayers0[i](x0)
+        #     x0 = self.sigmoid(x0)
+        #     x1 = self.fclayers1[i](x1)
+        #     x1 = self.sigmoid(x1)
+        #     x2 = self.fclayers2[i](x2)
+        #     x2 = self.sigmoid(x2)
+        #     x = paddle.multiply(paddle.multiply(x0, x1), x2)
         for i in range(self.layers):
-            x = self.relu(self.fclayers[i](x))
-        x = self.sigmoid(x)
+            x = self.fclayers0[i](x)
+            if i < self.layers -1:
+                # x = self.norms[i](x)
+                x = self.relu(x)
+        x = self.relu(x)
+        x = self.softmax(x)
         return x
 
 class Precision(paddle.metric.Metric):

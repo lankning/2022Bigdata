@@ -65,14 +65,47 @@
 | 22504 | no        |
 | 22505 | no        |
 
-# Results
+# 模型结构
 
-| MSE during training       | Accuracy during training  |
-| ------------------------- | ------------------------- |
-| ![0.25](statics/loss.png) | ![86.76](statics/acc.png) |
+全连接神经网络，5层，每层2048节点。可选：ReLU激活函数。
 
-# 参赛队伍
+<img src="statics/fcmodel.png" style="zoom:50%;" />
 
-我组件了一支单人队伍，队伍名称是finishtheless
+# 结果
 
-![image-20221214153011503](statics/image-20221214153011503.png)
+MSE & Accuracy during training process. Training settings: batch_size = 2500, epochs = 10.
+
+- Encode strings into a value
+  - 1-1 normalization & ReLU
+  - 1-2 ~~normalization~~ & ReLU
+  - 1-3 normalization & Sigmoid
+  - 1-4 ~~normalization~~ & Sigmoid
+- Onehot
+  - 2-1 normalization & ReLU
+  - 2-2 ~~normalization~~ & ReLU
+  - 2-3 normalization & Sigmoid
+  - 2-3 ~~normalization~~ & Sigmoid
+
+| MSE (1-1 normalization & ReLU) 0.01               | Accuracy (1-1 normalization & ReLU) 98.88%            |
+| ------------------------------------------------- | ----------------------------------------------------- |
+| ![](statics/loss_fcmodel_norm_relu.png)           | ![](statics/acc_fcmodel_norm_relu.png)                |
+| **MSE (1-2 ~~normalization~~ & ReLU) 0.01**       | **Accuracy (1-2 ~~normalization~~ & ReLU) 98.60%**    |
+| ![](statics/loss_fcmodel_relu.png)                | ![](statics/acc_fcmodel_relu.png)                     |
+| **MSE (1-3 normalization & Sigmoid) 0.07**        | **Accuracy (1-3 normalization & Sigmoid) 91.40%**     |
+| ![](statics/loss_fcmodel_norm_sigmoid.png)        | ![](statics/acc_fcmodel_norm_sigmoid.png)             |
+| **MSE (1-4 ~~normalization~~ & Sigmoid) 0.13**    | **Accuracy (1-4 ~~normalization~~ & Sigmoid) 86.84%** |
+| ![](statics/loss_fcmodel_sigmoid.png)             | ![](statics/acc_fcmodel_sigmoid.png)                  |
+| **MSE 2-1 normalization & ReLU 0.01**             | **Accuracy 2-1 normalization & ReLU 98.84%**          |
+| ![](statics/loss_fcmodel_norm_relu_onehot.png)    | ![](statics/acc_fcmodel_norm_relu_onehot.png)         |
+| **MSE 2-2 ~~normalization~~ & ReLU 0.13**         | **Accuracy 2-2 ~~normalization~~ & ReLU 87.24%**      |
+| ![](statics/loss_fcmodel_relu_onehot.png)         | ![](statics/acc_fcmodel_relu_onehot.png)              |
+| **MSE 2-3 normalization & Sigmoid 0.10**          | **Accuracy 2-3 normalization & Sigmoid 94.48%**       |
+| ![](statics/loss_fcmodel_norm_sigmoid_onehot.png) | ![](statics/acc_fcmodel_norm_sigmoid_onehot.png)      |
+| **MSE 2-4 ~~normalization~~ & Sigmoid 0.13**      | **Accuracy 2-4 ~~normalization~~ & Sigmoid 86.68%**   |
+| ![](statics/loss_fcmodel_sigmoid_onehot.png)      | ![](statics/acc_fcmodel_sigmoid_onehot.png)           |
+
+# **参赛队伍**
+
+**我组件了一支单人队伍，队伍名称是finishtheless**
+
+**![image-20221214153011503](statics/image-20221214153011503.png)**
