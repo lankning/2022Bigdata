@@ -38,6 +38,7 @@ class Dataset(paddle.io.Dataset):
             train: auto encode and save to .pkls
             test:  encode string by .pkls
         '''
+        fields = self.get_field()
         if self.mode == 'train':
             if self.onehot:
                 for i in range(22):
@@ -53,6 +54,7 @@ class Dataset(paddle.io.Dataset):
                         max = self.dataframe[self.dataframe.columns[i]].max()
                         min = abs(self.dataframe[self.dataframe.columns[i]].min())
                         max = max if max > min else min
+                        print("[Dataset::labelencoder] Max of [%s] is: %.2f" % (fields[i], max))
                         self.dataframe[self.dataframe.columns[i]] /= max
             else:
                 for i in range(22):
@@ -71,28 +73,58 @@ class Dataset(paddle.io.Dataset):
                         max = self.dataframe[self.dataframe.columns[i]].max()
                         min = abs(self.dataframe[self.dataframe.columns[i]].min())
                         max = max if max > min else min
+                        print("[Dataset::labelencoder] Max of [%s] is: %.2f" % (fields[i], max))
                         self.dataframe[self.dataframe.columns[i]] /= max
         elif self.mode == 'test':
             if self.onehot:
-                for i in self.encodelist:
-                    uniquedict = cfgs_io("statics/onehot_%d.pkl" % i, "in")
-                    self.dataframe[self.dataframe.columns[i]] = self.dataframe[self.dataframe.columns[i]].map(uniquedict)
+                for i in range(21):
+                    if i in self.encodelist[:-1]:
+                        uniquedict = cfgs_io("statics/onehot_%d.pkl" % i, "in")
+                        self.dataframe[self.dataframe.columns[i]] = self.dataframe[self.dataframe.columns[i]].map(uniquedict)
+                    elif self.norm:
+                        max = self.dataframe[self.dataframe.columns[i]].max()
+                        min = abs(self.dataframe[self.dataframe.columns[i]].min())
+                        max = max if max > min else min
+                        self.dataframe[self.dataframe.columns[i]] /= max
             else:
-                for i in self.encodelist:
-                    uniquedict = cfgs_io("statics/%d.pkl" % i, "in")
-                    self.dataframe[self.dataframe.columns[i]] = self.dataframe[self.dataframe.columns[i]].map(uniquedict)
+                for i in range(21):
+                    if i in self.encodelist:
+                        uniquedict = cfgs_io("statics/%d.pkl" % i, "in")
+                        self.dataframe[self.dataframe.columns[i]] = self.dataframe[self.dataframe.columns[i]].map(uniquedict)
+                    elif self.norm:
+                        max = self.dataframe[self.dataframe.columns[i]].max()
+                        min = abs(self.dataframe[self.dataframe.columns[i]].min())
+                        max = max if max > min else min
+                        self.dataframe[self.dataframe.columns[i]] /= max
         else: 
             raise ValueError('[Dateset::labelencoder] mode must be train or test')
    
     def showlabel(self):
+        fileds = self.get_field()
         if self.onehot:
             for i in self.encodelist:
                 struct = cfgs_io("statics/onehot_%d.pkl" % i, "in")
-                print(struct)
+                try:
+                    print("="*10, fileds[i], "="*10)
+                except:
+                    continue
+                for key,value in struct.items():
+                    try:
+                        print (key, "%.2f" % value)
+                    except:
+                        print (key, value)
         else:
             for i in self.encodelist:
                 struct = cfgs_io("statics/%d.pkl" % i, "in")
-                print(struct)
+                try:
+                    print("="*10, fileds[i], "="*10)
+                except:
+                    continue
+                for key,value in struct.items():
+                    try:
+                        print (key, "%.2f" % value)
+                    except:
+                        print (key, value)
 
     def __getitem__(self, index):
         if self.onehot:
@@ -112,11 +144,20 @@ class Dataset(paddle.io.Dataset):
                 inp = np.float32(inp)
         else:
             record = self.dataframe.iloc[index].values
-            label = record[-1:].copy()
-            inp = record[1:21].copy()
-            inp = np.float32(inp)
-            label = np.float32(label)
+            if self.mode == 'train':
+                label = record[-1:].copy()
+                inp = record[1:21].copy()
+                inp = np.float32(inp)
+                label = np.float32(label)
+            elif self.mode == 'test':
+                label = ''
+                inp = record[1:2]
+                inp = record[1:21].copy()
+                inp = np.float32(inp)
         return inp, label
+
+    def get_field(self):
+        return self.dataframe.columns
 
     def __len__(self):
         return len(self.dataframe)

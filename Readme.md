@@ -2,6 +2,8 @@
 [【教学赛】金融数据分析赛题1：银行客户认购产品预测](https://tianchi.aliyun.com/competition/entrance/531993/introduction?spm=5176.12281925.0.0.46e67137PjhlEt)
 ![](https://img.alicdn.com/imgextra/i3/O1CN01fBX9JF1XbwO78w3zP_!!6000000002943-2-tps-1440-438.png)
 
+**[课程论文](statics/大数据期论文_朱文康_2021206520006.pdf)**
+
 # 数据
 
 **To DO: 预测用户是否进行购买产品**
@@ -65,6 +67,42 @@
 | 22504 | no        |
 | 22505 | no        |
 
+## 数据编码
+
+数据编码分为两种，1是将所有数据全部编码为0-1范围内，2是采用独热编码
+
+- 编码方式1：全部编码到0-1内
+
+| 字段        | 字段值                                                       | 编码                                                         |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| job         | admin.  services  blue-collar  entrepreneur  management  technician  housemaid  self-employed  unemployed  retired  student  unknown | 0.00  0.09  0.18  0.27  0.36  0.45  0.55  0.64  0.73  0.82  0.91  1.00 |
+| marital     | divorced  married  single  unknown                           | 0.00  0.33  0.67  1.00                                       |
+| education   | professional.course  high.school  basic.9y  university.degree  unknown  basic.4y  basic.6y  illiterate | 0.00  0.14  0.29  0.43  0.57  0.71  0.86  1.00               |
+| default     | no  unknown  yes                                             | 0.00  0.50  1.00                                             |
+| housing     | yes  no  unknown                                             | 0.00  0.50  1.00                                             |
+| loan        | yes  no  unknown                                             | 0.00  0.50  1.00                                             |
+| contact     | cellular  telephone                                          | 0.00  1.00                                                   |
+| month       | aug  may  apr  nov  jul  jun  oct  dec  sep  mar             | 0.00  0.11  0.22  0.33  0.44  0.56  0.67  0.78  0.89  1.00   |
+| day_of_week | mon  wed  fri  tue  thu                                      | 0.00  0.25  0.50  0.75  1.00                                 |
+| poutcome    | failure  nonexistent  success                                | 0.00  0.50  1.00                                             |
+| subscribe   | no  yes                                                      | 0.00  1.00                                                   |
+
+- 编码方式2：独热编码
+
+| 字段        | 字段值                                                       | 编码                                                         |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| job         | admin.  services  blue-collar  entrepreneur  management  technician  housemaid  self-employed  unemployed  retired  student  unknown | [1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]  [0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]  [0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]  [0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0.]  [0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0.]  [0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]  [0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]  [0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]  [0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]  [0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1.] |
+| marital     | divorced  married  single  unknown                           | [1. 0. 0. 0.]  [0. 1. 0. 0.]  [0. 0. 1. 0.]  [0. 0. 0. 1.]   |
+| education   | professional.course  high.school  basic.9y  university.degree  unknown  basic.4y  basic.6y  illiterate | [1. 0. 0. 0. 0. 0. 0. 0.]  [0. 1. 0. 0. 0. 0. 0. 0.]  [0. 0. 1. 0. 0. 0. 0. 0.]  [0. 0. 0. 1. 0. 0. 0. 0.]  [0. 0. 0. 0. 1. 0. 0. 0.]  [0. 0. 0. 0. 0. 1. 0. 0.]  [0. 0. 0. 0. 0. 0. 1. 0.]  [0. 0. 0. 0. 0. 0. 0. 1.] |
+| default     | no  unknown  yes                                             | [1. 0. 0.]  [0. 1. 0.]  [0. 0. 1.]                           |
+| housing     | yes  no  unknown                                             | [1. 0. 0.]  [0. 1. 0.]  [0. 0. 1.]                           |
+| loan        | yes  no  unknown                                             | [1. 0. 0.]  [0. 1. 0.]  [0. 0. 1.]                           |
+| contact     | cellular  telephone                                          | [1. 0.]  [0. 1.]                                             |
+| month       | aug  may  apr  nov  jul  jun  oct  dec  sep  mar             | [1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]  [0. 1. 0. 0. 0. 0. 0. 0. 0. 0.]  [0. 0. 1. 0. 0. 0. 0. 0. 0. 0.]  [0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]  [0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]  [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]  [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]  [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]  [0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]  [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.] |
+| day_of_week | mon  wed  fri  tue  thu                                      | [1. 0. 0. 0. 0.]  [0. 1. 0. 0. 0.]  [0. 0. 1. 0. 0.]  [0. 0. 0. 1. 0.]  [0. 0. 0. 0. 1.] |
+| poutcome    | failure  nonexistent  success                                | [1. 0. 0.]  [0. 1. 0.]  [0. 0. 1.]                           |
+| subscribe   | no  yes                                                      | [1. 0.]  [0. 1.]                                             |
+
 # 模型结构
 
 全连接神经网络，5层，每层2048节点。可选：ReLU激活函数、batch normlization、onehot编码。
@@ -78,15 +116,15 @@
 MSE & Accuracy during training process. Training settings: batch_size = 2500, epochs = 10.
 
 - Encode strings into a value
-  - 1-1 normalization & ReLU
-  - 1-2 ~~normalization~~ & ReLU
-  - 1-3 normalization & Sigmoid
-  - 1-4 ~~normalization~~ & Sigmoid
+  - **1-1 normalization & ReLU，提交得分：0.9117**
+  - 1-2 ~~normalization~~ & ReLU，提交得分：0.9007
+  - 1-3 normalization & Sigmoid，提交得分：0.7845
+  - **1-4 ~~normalization~~ & Sigmoid，提交得分：0.9224**
 - Onehot
-  - 2-1 normalization & ReLU
-  - 2-2 ~~normalization~~ & ReLU
-  - 2-3 normalization & Sigmoid
-  - 2-3 ~~normalization~~ & Sigmoid
+  - 2-1 normalization & ReLU，提交得分：0.9029
+  - 2-2 ~~normalization~~ & ReLU，提交得分：0
+  - **2-3 normalization & Sigmoid，提交得分：0.9217**
+  - 2-4 ~~normalization~~ & Sigmoid，提交得分：0
 
 | MSE (1-1 normalization & ReLU) 0.01               | Accuracy (1-1 normalization & ReLU) 98.88%            |
 | ------------------------------------------------- | ----------------------------------------------------- |
